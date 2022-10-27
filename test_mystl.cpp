@@ -10,13 +10,6 @@ struct Node
     Node(int k = 0, int v = 0) : key(k), value(v) {}
 };
 
-struct LinkNode
-{
-    LinkNode *next;
-    int val;
-    LinkNode(int v, LinkNode *nx = nullptr) : val(v), next(nx) {}
-};
-
 int main()
 {
     vector<Node> v(5);
@@ -30,6 +23,5 @@ int main()
     {
         std::cout << v[i].key << "-" << v[i].value << std::endl;
     }
-    std::vector<LinkNode> vn(10);
     return 0;
 }
