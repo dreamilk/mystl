@@ -1,15 +1,22 @@
 #ifndef MYSTL_VECTOR_H
 #define MYSTL_VECTOR_H
 
-#include "mystl_alloctor.h"
+#include "mystl_alloctor.hpp"
 
 namespace mystl
 {
     using uint = unsigned int;
+
     template <typename T, typename Alloc = alloctor<T>>
     class vector
     {
     private:
+        using value_type = T;
+        using pointer = T *;
+        using const_pointer = const T *;
+        using reference = T &;
+        using const_reference = const T &;
+
         Alloc data_alloctor;
         T *_content;
         uint _size;
@@ -21,6 +28,7 @@ namespace mystl
         T pop_back();
         T &operator[](uint pos);
         void reserve(uint n, const T &t = T());
+
         uint size();
         uint capacity();
         ~vector();
@@ -48,11 +56,7 @@ T &mystl::vector<T, Alloc>::operator[](mystl::uint pos)
 template <class T, class Alloc>
 void mystl::vector<T, Alloc>::reserve(mystl::uint n, const T &t)
 {
-    if (_capacity == n)
-    {
-        return;
-    }
-    else if (_capacity < n)
+    if (_capacity < n)
     {
         T *_new_content = data_alloctor.allocate(n);
         for (uint i = 0; i < _size; ++i)
@@ -63,14 +67,6 @@ void mystl::vector<T, Alloc>::reserve(mystl::uint n, const T &t)
         data_alloctor.deallocate(_content);
         _content = _new_content;
         _capacity = n;
-    }
-    else
-    {
-        _capacity = n;
-        if (_size > n)
-        {
-            _size = n;
-        }
     }
 }
 

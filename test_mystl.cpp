@@ -1,4 +1,4 @@
-#include "mystl_vector.h"
+#include "mystl_vector.hpp"
 #include <bits/stdc++.h>
 
 using namespace mystl;
@@ -23,5 +23,10 @@ int main()
     {
         std::cout << v[i].key << "-" << v[i].value << std::endl;
     }
+    int sum = std::count_if(v.begin(), v.end(), [](const Node &node)
+                            {
+        if(node.key==0) return true;
+        return false; });
+    std::cout << "count: " << sum << std::endl;
     return 0;
 }
