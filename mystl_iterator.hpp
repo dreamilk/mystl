@@ -3,16 +3,31 @@
 
 namespace mstl
 {
-    template <class Category, class T, class Distance = int,
-              class Pointer = T *, class Reference = T &>
-    struct iterator
+    template <typename Category, typename T>
+    class iterator
     {
-        typedef Category iterator_category;
-        typedef T value_type;
-        typedef Pointer pointer;
-        typedef Reference reference;
-        typedef Distance difference_type;
-    };
+    private:
+    public:
+        iterator();
+        iterator &operator++(int);
 
+        ~iterator();
+    };
 }
+
+template <class Category, class T>
+mstl::iterator<Category, T>::iterator()
+{
+}
+
+template <class Category, class T>
+mstl::iterator<Category, T>::~iterator()
+{
+}
+
+template <class Category, class T>
+mstl::iterator<Category, T> &mstl::iterator<Category, T>::operator++(int)
+{
+}
+
 #endif

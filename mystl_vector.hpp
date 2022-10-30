@@ -2,6 +2,9 @@
 #define MYSTL_VECTOR_H
 
 #include "mystl_alloctor.hpp"
+#include "mystl_iterator.hpp"
+
+#include <utility>
 
 namespace mystl
 {
@@ -17,33 +20,45 @@ namespace mystl
         using reference = T &;
         using const_reference = const T &;
 
+        using iterator = T *;
+
         Alloc data_alloctor;
         T *_content;
         uint _size;
         uint _capacity;
 
+        void check_and_expand();
+
     public:
-        vector(uint s = 0, const T &t = T());
+        vector(uint s = 0);
+
         void push_back(const T &t);
+
         T pop_back();
         T &operator[](uint pos);
         void reserve(uint n, const T &t = T());
 
-        uint size();
-        uint capacity();
+        iterator begin() const;
+        iterator end() const;
+
+        uint size() const;
+        uint capacity() const;
         ~vector();
+
+        template <class... Args>
+        void emplace_back(Args &&...args);
     };
 }
 
 template <class T, class Alloc>
-mystl::vector<T, Alloc>::vector(uint s, const T &t)
+mystl::vector<T, Alloc>::vector(uint s)
 {
     _size = s;
     _capacity = s;
     _content = data_alloctor.allocate(s);
     for (uint i = 0; i < _size; ++i)
     {
-        data_alloctor.construct(&_content[i], t);
+        data_alloctor.construct(&_content[i]);
     }
 }
 
@@ -71,37 +86,65 @@ void mystl::vector<T, Alloc>::reserve(mystl::uint n, const T &t)
 }
 
 template <class T, class Alloc>
-mystl::uint mystl::vector<T, Alloc>::size()
+T *mystl::vector<T, Alloc>::begin() const
+{
+    return _content;
+}
+
+template <class T, class Alloc>
+T *mystl::vector<T, Alloc>::end() const
+{
+    return _content + _size;
+}
+
+template <class T, class Alloc>
+mystl::uint mystl::vector<T, Alloc>::size() const
 {
     return _size;
 }
 
 template <class T, class Alloc>
-mystl::uint mystl::vector<T, Alloc>::capacity()
+mystl::uint mystl::vector<T, Alloc>::capacity() const
 {
     return _capacity;
 }
 
 template <class T, class Alloc>
-void mystl::vector<T, Alloc>::push_back(const T &t)
+void mystl::vector<T, Alloc>::check_and_expand()
 {
     if (_size == _capacity)
     {
-        T *_new_content = data_alloctor.allocate(2 * _capacity);
-        for (uint i = 0; i < _size; ++i)
-        {
-            data_alloctor.construct(&_new_content[i], _content[i]);
-            data_alloctor.destory(&_content[i]);
-        }
+        _capacity = _capacity == 0 ? 1 : 2 * _capacity;
+        T *_new_content = data_alloctor.allocate(_capacity);
+        uninitialized_copy(_content, _content + _size, _new_content);
+        destory(_content, _content + _size);
         data_alloctor.deallocate(_content);
         _content = _new_content;
-        _capacity *= 2;
     }
-    _content[_size++] = t;
+}
+
+template <class T, class Alloc>
+void mystl::vector<T, Alloc>::push_back(const T &t)
+{
+    check_and_expand();
+    data_alloctor.construct(&_content[_size++], t);
+}
+
+template <class T, class Alloc>
+template <class... Args>
+void mystl::vector<T, Alloc>::emplace_back(Args &&...args)
+{
+    check_and_expand();
+    data_alloctor.construct(&_content[_size++], std::forward<Args>(args)...);
 }
 
 template <class T, class Alloc>
 mystl::vector<T, Alloc>::~vector()
 {
+    for (uint i = 0; i < _size; ++i)
+    {
+        data_alloctor.destory(&_content[i]);
+    }
+    data_alloctor.deallocate(_content);
 }
 #endif

@@ -5,28 +5,79 @@ using namespace mystl;
 
 struct Node
 {
+private:
+    static int cn;
+    static int dcn;
+
+public:
     int key;
     int value;
-    Node(int k = 0, int v = 0) : key(k), value(v) {}
+
+    explicit Node()
+    {
+        std::cout << "construct():" << ++cn << std::endl;
+        key = 0;
+        value = 0;
+    }
+    explicit Node(int k, int v) : key(k), value(v)
+    {
+        std::cout << "construct():" << ++cn << std::endl;
+    }
+
+    Node(const Node &rhs)
+    {
+        std::cout << "copy construct():" << ++cn << std::endl;
+        key = rhs.key;
+        value = rhs.value;
+    }
+
+    Node(Node &&rhs)
+    {
+        std::cout << "move construct():" << ++cn << std::endl;
+        key = rhs.key;
+        value = rhs.value;
+    }
+
+    Node &operator=(const Node &rhs)
+    {
+        std::cout << "Node& operator=(const Node& rhs)" << std::endl;
+        key = rhs.key;
+        value = rhs.value;
+        return *this;
+    }
+
+    Node &operator=(Node &&rhs)
+    {
+        std::cout << "Node &operator=(Node &&rhs)" << std::endl;
+        key = rhs.key;
+        value = rhs.value;
+        return *this;
+    }
+
+    ~Node()
+    {
+        std::cout << "deconstruct():" << ++dcn << std::endl;
+    }
 };
+
+int Node::cn = 0;
+int Node::dcn = 0;
 
 int main()
 {
-    vector<Node> v(5);
-    for (int i = 0; i < 3; ++i)
+    vector<Node> v(3);
+    // std::vector<Node> v(3);
+    // for (int i = 0; i < 3; ++i)
+    // {
+    //     v[i] = Node(i, 2 * i);
+    // }
+    std::cout << "-" << std::endl;
+    v.emplace_back(10, 20);
+    // v.push_back(Node(10, 11));
+    std::cout << "size:" << v.size() << " capacity:" << v.capacity() << std::endl;
+    for (auto &n : v)
     {
-        v[i] = Node(i, 2 * i);
+        std::cout << n.key << "-" << n.value << std::endl;
     }
-    v.push_back(Node(10, 11));
-    std::cout << "capacity:" << v.capacity() << std::endl;
-    for (int i = 0; i < v.size(); ++i)
-    {
-        std::cout << v[i].key << "-" << v[i].value << std::endl;
-    }
-    int sum = std::count_if(v.begin(), v.end(), [](const Node &node)
-                            {
-        if(node.key==0) return true;
-        return false; });
-    std::cout << "count: " << sum << std::endl;
     return 0;
 }
