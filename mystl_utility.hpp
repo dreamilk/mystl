@@ -1,5 +1,5 @@
-#ifndef MYSTL_UTILITY
-#define MYSTL_UTILITY
+#ifndef MYSTL_UTILITY_HPP
+#define MYSTL_UTILITY_HPP
 
 namespace mystl
 {

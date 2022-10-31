@@ -1,5 +1,5 @@
-#ifndef MYSTL_ALLOCTOR_H
-#define MYSTL_ALLOCTOR_H
+#ifndef MYSTL_ALLOCTOR_HPP
+#define MYSTL_ALLOCTOR_HPP
 
 // 这是一个简单的构造器
 #include <utility>
