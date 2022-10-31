@@ -5,7 +5,7 @@
 #include "mystl_iterator.hpp"
 #include "mystl_utility.hpp"
 
-#include <utility>
+// #include <utility>
 
 namespace mystl
 {
@@ -24,6 +24,7 @@ namespace mystl
         using size_type = unsigned int;
 
         using iterator = T *;
+        using const_iterator = const T *;
 
         Alloc data_alloctor;
         T *_content;
