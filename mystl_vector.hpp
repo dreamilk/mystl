@@ -85,7 +85,7 @@ namespace mystl
 }
 
 template <class T, class Alloc>
-mystl::vector<T, Alloc>::vector(const Alloc &alloc = typename mystl::vector<T, Alloc>::allocator_type()) : data_alloctor(alloc)
+mystl::vector<T, Alloc>::vector(const Alloc &alloc) : data_alloctor(alloc), _size(0)
 {
 }
 
@@ -171,6 +171,12 @@ void mystl::vector<T, Alloc>::emplace_back(Args &&...args)
 {
     check_and_expand();
     data_alloctor.construct(&_content[_size++], mystl::forward<Args>(args)...);
+}
+
+template <class T, class Alloc>
+void mystl::vector<T, Alloc>::pop_back()
+{
+    _size--;
 }
 
 template <class T, class Alloc>

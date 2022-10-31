@@ -65,12 +65,13 @@ int Node::dcn = 0;
 
 int main()
 {
-    // vector<Node *> v(3);
-    std::vector<Node *> v(3);
+    vector<Node *> v(3);
+    // std::vector<Node *> v(3);
     for (int i = 0; i < 3; ++i)
     {
         v[i] = new Node(i, 2 * i);
     }
+    v.pop_back();
     std::cout << "-" << std::endl;
     // v.emplace_back(10, 20);
     // std::sort(v.begin(), v.end(), [](const Node &a, const Node &b)
