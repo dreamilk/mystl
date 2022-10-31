@@ -3,6 +3,7 @@
 
 #include "mystl_alloctor.hpp"
 #include "mystl_iterator.hpp"
+#include "mystl_utility.hpp"
 
 #include <utility>
 
@@ -20,6 +21,8 @@ namespace mystl
         using reference = T &;
         using const_reference = const T &;
 
+        using size_type = unsigned int;
+
         using iterator = T *;
 
         Alloc data_alloctor;
@@ -31,22 +34,45 @@ namespace mystl
 
     public:
         vector(uint s = 0);
+        ~vector();
+        vector &operator=(const vector &x);
+        vector &operator=(vector &&x);
 
-        void push_back(const T &t);
+        void assign(size_type n, const value_type &val);
+        void push_back(const value_type &val);
+        void push_back(value_type &&val);
+        void pop_back();
+        iterator insert(const_iterator position, const value_type &val);
+        iterator insert(const_iterator position, value_type &&val);
+        iterator erase(const_iterator position);
+        iterator erase(const_iterator first, const_iterator last);
+        void swap(vector &x);
+        void clear();
 
-        T pop_back();
-        T &operator[](uint pos);
-        void reserve(uint n, const T &t = T());
+        template <class... Args>
+        iterator emplace(const_iterator position, Args &&...args);
+
+        template <class... Args>
+        void emplace_back(Args &&...args);
+
+        void reserve(size_type n);
+        size_type size() const;
+        void resize(size_type n);
+        void resize(size_type n, const value_type &val);
+        bool empty() const;
+        size_type capacity() const;
+        void shrink_to_fit();
 
         iterator begin() const;
         iterator end() const;
 
-        uint size() const;
-        uint capacity() const;
-        ~vector();
-
-        template <class... Args>
-        void emplace_back(Args &&...args);
+        value_type &operator[](size_type pos);
+        reference at(size_type n);
+        const_reference at(size_type n) const;
+        reference back();
+        const_reference back() const;
+        value_type *data() noexcept;
+        const value_type *data() const noexcept;
     };
 }
 
@@ -69,16 +95,12 @@ T &mystl::vector<T, Alloc>::operator[](mystl::uint pos)
 }
 
 template <class T, class Alloc>
-void mystl::vector<T, Alloc>::reserve(mystl::uint n, const T &t)
+void mystl::vector<T, Alloc>::reserve(mystl::uint n)
 {
     if (_capacity < n)
     {
         T *_new_content = data_alloctor.allocate(n);
-        for (uint i = 0; i < _size; ++i)
-        {
-            data_alloctor.construct(&_new_content[i], _content[i]);
-            data_alloctor.destory(&_content[i]);
-        }
+        mystl::uninitialized_copy(_content, _size, _new_content);
         data_alloctor.deallocate(_content);
         _content = _new_content;
         _capacity = n;
@@ -135,7 +157,7 @@ template <class... Args>
 void mystl::vector<T, Alloc>::emplace_back(Args &&...args)
 {
     check_and_expand();
-    data_alloctor.construct(&_content[_size++], std::forward<Args>(args)...);
+    data_alloctor.construct(&_content[_size++], mystl::forward<Args>(args)...);
 }
 
 template <class T, class Alloc>
