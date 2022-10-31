@@ -26,6 +26,8 @@ namespace mystl
         using iterator = T *;
         using const_iterator = const T *;
 
+        using allocator_type = Alloc;
+
         Alloc data_alloctor;
         T *_content;
         uint _size;
@@ -34,6 +36,7 @@ namespace mystl
         void check_and_expand();
 
     public:
+        explicit vector(const allocator_type &alloc = allocator_type());
         explicit vector(size_type n);
         vector(const vector &x);
         vector(vector &&x);
@@ -79,6 +82,11 @@ namespace mystl
         value_type *data() noexcept;
         const value_type *data() const noexcept;
     };
+}
+
+template <class T, class Alloc>
+mystl::vector<T, Alloc>::vector(const Alloc &alloc = typename mystl::vector<T, Alloc>::allocator_type()) : data_alloctor(alloc)
+{
 }
 
 template <class T, class Alloc>

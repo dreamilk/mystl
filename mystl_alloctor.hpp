@@ -2,7 +2,7 @@
 #define MYSTL_ALLOCTOR_HPP
 
 // 这是一个简单的构造器
-#include <utility>
+#include "mystl_utility.hpp"
 
 namespace mystl
 {
@@ -87,7 +87,7 @@ template <class T>
 template <class... Args>
 void mystl::alloctor<T>::construct(T *p, Args &&...args)
 {
-    new (p) T(std::forward<Args>(args)...);
+    new (p) T(mystl::forward<Args>(args)...);
 }
 
 template <class T1, class T2>
