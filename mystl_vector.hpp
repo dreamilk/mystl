@@ -34,8 +34,12 @@ namespace mystl
         void check_and_expand();
 
     public:
-        vector(uint s = 0);
+        explicit vector(size_type n);
+        vector(const vector &x);
+        vector(vector &&x);
+        vector(size_type n, const value_type &val, const allocator_type &alloc = allocator_type());
         ~vector();
+
         vector &operator=(const vector &x);
         vector &operator=(vector &&x);
 
@@ -78,7 +82,7 @@ namespace mystl
 }
 
 template <class T, class Alloc>
-mystl::vector<T, Alloc>::vector(uint s)
+mystl::vector<T, Alloc>::vector(unsigned int s)
 {
     _size = s;
     _capacity = s;
