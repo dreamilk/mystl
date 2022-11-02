@@ -65,15 +65,20 @@ int Node::dcn = 0;
 
 int main()
 {
+    int a = 0, b = 1;
+    mystl::swap(a, b);
+    std::cout << a << " " << b << std::endl;
     vector<Node> v(3);
+    vector<Node> v1;
     // std::vector<Node> v(3);
     for (int i = 0; i < 3; ++i)
     {
-        v[i] = Node(i, 2 * i);
+        v.at(i) = Node(i, 2 * i);
     }
     v.pop_back();
     v.push_back(Node(11, 11));
     std::cout << "-" << std::endl;
+    vector<Node>().swap(v);
     // v.emplace_back(10, 20);
     // std::sort(v.begin(), v.end(), [](const Node &a, const Node &b)
     //           { return a.key > b.key; });

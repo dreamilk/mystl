@@ -87,6 +87,7 @@ namespace mystl
 template <class T, class Alloc>
 mystl::vector<T, Alloc>::vector(const Alloc &alloc) : data_alloctor(alloc), _size(0)
 {
+    _content = nullptr;
 }
 
 template <class T, class Alloc>
@@ -136,6 +137,12 @@ template <class T, class Alloc>
 mystl::uint mystl::vector<T, Alloc>::size() const
 {
     return _size;
+}
+
+template <class T, class Alloc>
+bool mystl::vector<T, Alloc>::empty() const
+{
+    return _size == 0;
 }
 
 template <class T, class Alloc>
@@ -201,4 +208,20 @@ T &mystl::vector<T, Alloc>::at(unsigned int n)
 {
     return (T &)_content[n];
 }
+
+template <class T, class Alloc>
+T &mystl::vector<T, Alloc>::back()
+{
+    return _content[_size - 1];
+}
+
+template <class T, class Alloc>
+void mystl::vector<T, Alloc>::swap(mystl::vector<T, Alloc> &x)
+{
+    mystl::swap(x.data_alloctor, data_alloctor);
+    mystl::swap(x._capacity, _capacity);
+    mystl::swap(x._size, _size);
+    mystl::swap(x._content, _content);
+}
+
 #endif
