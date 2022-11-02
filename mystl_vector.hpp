@@ -166,6 +166,13 @@ void mystl::vector<T, Alloc>::push_back(const T &t)
 }
 
 template <class T, class Alloc>
+void mystl::vector<T, Alloc>::push_back(T &&val)
+{
+    check_and_expand();
+    data_alloctor.construct(&_content[_size++], mystl::forward<T>(val));
+}
+
+template <class T, class Alloc>
 template <class... Args>
 void mystl::vector<T, Alloc>::emplace_back(Args &&...args)
 {
@@ -176,7 +183,7 @@ void mystl::vector<T, Alloc>::emplace_back(Args &&...args)
 template <class T, class Alloc>
 void mystl::vector<T, Alloc>::pop_back()
 {
-    _size--;
+    data_alloctor.destory(&_content[_size--]);
 }
 
 template <class T, class Alloc>

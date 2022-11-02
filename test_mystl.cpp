@@ -65,13 +65,14 @@ int Node::dcn = 0;
 
 int main()
 {
-    vector<Node *> v(3);
-    // std::vector<Node *> v(3);
+    vector<Node> v(3);
+    // std::vector<Node> v(3);
     for (int i = 0; i < 3; ++i)
     {
-        v[i] = new Node(i, 2 * i);
+        v[i] = Node(i, 2 * i);
     }
     v.pop_back();
+    v.push_back(Node(11, 11));
     std::cout << "-" << std::endl;
     // v.emplace_back(10, 20);
     // std::sort(v.begin(), v.end(), [](const Node &a, const Node &b)
@@ -80,7 +81,7 @@ int main()
     std::cout << "size:" << v.size() << " capacity:" << v.capacity() << std::endl;
     for (auto &n : v)
     {
-        std::cout << n->key << "-" << n->value << std::endl;
+        std::cout << n.key << "-" << n.value << std::endl;
     }
     std::cout << typeid(v).name() << std::endl;
     return 0;
