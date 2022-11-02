@@ -151,7 +151,7 @@ void mystl::vector<T, Alloc>::check_and_expand()
     {
         _capacity = _capacity == 0 ? 1 : 2 * _capacity;
         T *_new_content = data_alloctor.allocate(_capacity);
-        uninitialized_copy(_content, _content + _size, _new_content);
+        mystl::uninitialized_copy(_content, _content + _size, _new_content);
         destory(_content, _content + _size);
         data_alloctor.deallocate(_content);
         _content = _new_content;
@@ -194,5 +194,11 @@ mystl::vector<T, Alloc>::~vector()
         data_alloctor.destory(&_content[i]);
     }
     data_alloctor.deallocate(_content);
+}
+
+template <class T, class Alloc>
+T &mystl::vector<T, Alloc>::at(unsigned int n)
+{
+    return (T &)_content[n];
 }
 #endif
