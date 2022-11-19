@@ -1,33 +1,19 @@
 #ifndef MYSTL_ITERATOR_HPP
 #define MYSTL_ITERATOR_HPP
 
-namespace mstl
+namespace mystl
 {
-    template <typename Category, typename T>
-    class iterator
+
+    template <typename T>
+    struct iterator_traits
     {
-    private:
-    public:
-        iterator();
-        iterator &operator++(int);
-
-        ~iterator();
+        using value_type = typename T::value_type;
+        // using iterator_category = typename T::iterator_category;
+        using difference_type = typename T::difference_type;
+        using pointer = typename T::pointer;
+        using reference = typename T::reference;
     };
-}
 
-template <class Category, class T>
-mstl::iterator<Category, T>::iterator()
-{
-}
-
-template <class Category, class T>
-mstl::iterator<Category, T>::~iterator()
-{
-}
-
-template <class Category, class T>
-mstl::iterator<Category, T> &mstl::iterator<Category, T>::operator++(int)
-{
 }
 
 #endif

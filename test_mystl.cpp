@@ -1,4 +1,6 @@
 #include "mystl_vector.hpp"
+#include "mystl_iterator.hpp"
+#include "mystl_algorithm.hpp"
 #include <bits/stdc++.h>
 
 using namespace mystl;
@@ -27,8 +29,8 @@ public:
     Node(const Node &rhs)
     {
         std::cout << "copy construct():" << ++cn << std::endl;
-        key = rhs.key;
-        value = rhs.value;
+        this->key = rhs.key;
+        this->value = rhs.value;
     }
 
     Node(Node &&rhs)
@@ -44,6 +46,11 @@ public:
         key = rhs.key;
         value = rhs.value;
         return *this;
+    }
+
+    bool operator==(const Node &rhs)
+    {
+        return rhs.key == key && rhs.value == value;
     }
 
     Node &operator=(Node &&rhs)
@@ -65,29 +72,27 @@ int Node::dcn = 0;
 
 int main()
 {
-    int a = 0, b = 1;
-    mystl::swap(a, b);
-    std::cout << a << " " << b << std::endl;
-    vector<Node> v(3);
-    vector<Node> v1;
-    // std::vector<Node> v(3);
-    for (int i = 0; i < 3; ++i)
+
     {
-        v.at(i) = Node(i, 2 * i);
+        std::cout << "std::vector<Node>" << std::endl;
+        std::vector<Node> v;
+        v.push_back(Node(1, 1));
     }
-    v.pop_back();
-    v.push_back(Node(11, 11));
-    std::cout << "-" << std::endl;
-    vector<Node>().swap(v);
-    // v.emplace_back(10, 20);
-    // std::sort(v.begin(), v.end(), [](const Node &a, const Node &b)
-    //           { return a.key > b.key; });
-    // v.push_back(Node(10, 11));
-    std::cout << "size:" << v.size() << " capacity:" << v.capacity() << std::endl;
-    for (auto &n : v)
     {
-        std::cout << n.key << "-" << n.value << std::endl;
+        std::cout << "mystl::vector<Node>" << std::endl;
+        mystl::vector<Node> v;
+        v.push_back(Node(1, 1));
     }
-    std::cout << typeid(v).name() << std::endl;
+    {
+        std::cout << "test move" << std::endl;
+        Node a = mystl::move(Node(1, 2));
+    }
+    // std::stack<Node, mystl::vector<Node>> st;
+    // for (int i = 0; i < 3; ++i)
+    // {
+    //     st.push(Node(i, 2 * i));
+    // }
+    // std::cout << typeid(st).name() << std::endl;
+
     return 0;
 }
