@@ -72,6 +72,7 @@ int Node::dcn = 0;
 
 int main()
 {
+    std::cout << "test mystl" << std::endl;
 
     {
         std::cout << "std::vector<Node>" << std::endl;
